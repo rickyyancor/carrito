@@ -92,7 +92,8 @@ io.on('connection', function (socket) {
   socket.on('servo',function(posicion) {
 	var Gpio = require('pigpio').Gpio;
   var motor = new Gpio(21, {mode: Gpio.OUTPUT});
-  if(!(posicion<510 || posicion >2490))
+  posicion=posicion*(180/1750)+550;
+  if(!(posicion<550 || posicion >2300))
   {
     motor.servoWrite(posicion);
   }
