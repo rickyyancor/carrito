@@ -24,6 +24,10 @@ app.get("/", function (req, res) {
       res.sendFile(__dirname + '/html/index.html');
 });
 
+var posServo=90;
+var Gpiom = require('pigpio').Gpio;
+var motorm = new Gpiom(21, {mode: Gpio.OUTPUT});
+motorm.servoWrite(parseInt(posServo));
 
 var Gpio = require('onoff').Gpio;
 var adelante = new Gpio(26, 'out');
@@ -89,6 +93,28 @@ io.on('connection', function (socket) {
     }, parseInt(time));
     console.log("iz atras "+time)
   });
+  socket.on('girar_derecha',function(posicion) {
+  var Gpio = require('pigpio').Gpio;
+  var motor = new Gpio(21, {mode: Gpio.OUTPUT});
+  posServo=posServo-parseInt(posicion);
+  if(posServo>180)
+    posServo=180
+  if(posServo<0)
+    posServo=0
+  console.log("servo"+posicion);
+  motor.servoWrite(parseInt(posServo));
+  });
+  socket.on('girar_izquierda',function(posicion) {
+  var Gpio = require('pigpio').Gpio;
+  var motor = new Gpio(21, {mode: Gpio.OUTPUT});
+  posServo=posServo+parseInt(posicion);
+  if(posServo>180)
+    posServo=180
+  if(posServo<0)
+    posServo=0
+  console.log("servo"+posicion);
+  motor.servoWrite(parseInt(posServo));
+  });
   socket.on('servo',function(posicion) {
 	var Gpio = require('pigpio').Gpio;
   var motor = new Gpio(21, {mode: Gpio.OUTPUT});
@@ -99,6 +125,6 @@ io.on('connection', function (socket) {
     console.log("servo"+posicion);
     motor.servoWrite(parseInt(posicion));
   }
-});
+  });
 
 });
