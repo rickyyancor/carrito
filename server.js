@@ -32,30 +32,71 @@ var derecha = new Gpio(13, 'out');
 var izquierda = new Gpio(6, 'out');
 
 io.on('connection', function (socket) {
+  socket.on('detener',function(time) {
+  	adelante.writeSync(0);
+    atras.writeSync(0);
+    derecha.writeSync(0);
+    izquierda.writeSync(0);
+    console.log("detener"+time)
+  });
   socket.on('adelante',function(time) {
   	adelante.writeSync(1);
     setTimeout(function () {
       adelante.writeSync(0);
-    }, 1000)
-    console.log(time)
+    }, parseInt(time));
+    console.log("adelante "+time)
   });
-  socket.on('pruebaaa',function(mensaje) {
+  socket.on('atras',function(time) {
+  	atras.writeSync(1);
+    setTimeout(function () {
+      atras.writeSync(0);
+    }, parseInt(time));
+    console.log("atras "+time)
+  });
+  socket.on('derecha_adelante',function(time) {
+  	adelante.writeSync(1);
+    derecha.writeSync(1);
+    setTimeout(function () {
+      adelante.writeSync(0);
+      derecha.writeSync(0);
+    }, parseInt(time));
+    console.log("de adelante "+time)
+  });
+  socket.on('derecha_atras',function(time) {
+    derecha.writeSync(1);
+    atras.writeSync(1);
+    setTimeout(function () {
+      atras.writeSync(0);
+      derecha.writeSync(0);
+    }, parseInt(time));
+    console.log("de atras "+time)
+  });
+  socket.on('izquierda_adelante',function(time) {
+    adelante.writeSync(1);
+    izquierda.writeSync(1);
+    setTimeout(function () {
+      adelante.writeSync(0);
+      izquierda.writeSync(0);
+    }, parseInt(time));
+    console.log("iz adelante "+time)
+  });
+  socket.on('izquierda_atras',function(time) {
+    izquierda.writeSync(1);
+    atras.writeSync(1);
+    setTimeout(function () {
+      atras.writeSync(0);
+      izquierda.writeSync(0);
+    }, parseInt(time));
+    console.log("iz atras "+time)
+  });
+  socket.on('servo',function(posicion) {
 	var Gpio = require('pigpio').Gpio,
   motor = new Gpio(21, {mode: Gpio.OUTPUT}),
-  pulseWidth = 1000,
-  increment = 100;
-
-setInterval(function () {
-  motor.servoWrite(pulseWidth);
-
-  pulseWidth += increment;
-  if (pulseWidth >= 2000) {
-    increment = -100;
-  } else if (pulseWidth <= 1000) {
-    increment = 100;
+  if(!(posicion<510 || posicion >2490))
+  {
+    motor.servoWrite(posicion);
   }
-}, 1000);
-
-    console.log(mensaje);
+  console.log("servo "posicion);
 });
+
 });
