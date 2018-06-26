@@ -26,7 +26,7 @@ app.get("/", function (req, res) {
 
 var posServo=90;
 var Gpiom = require('pigpio').Gpio;
-var motorm = new Gpiom(21, {mode: Gpio.OUTPUT});
+var motorm = new Gpiom(21, {mode: Gpiom.OUTPUT});
 motorm.servoWrite(parseInt(posServo));
 
 var Gpio = require('onoff').Gpio;
