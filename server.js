@@ -96,7 +96,7 @@ io.on('connection', function (socket) {
   {
     motor.servoWrite(posicion);
   }
-  console.log("servo "posicion);
+  console.log("servo"+posicion);
 });
 
 });
