@@ -98,8 +98,12 @@ io.on('connection', function (socket) {
   if(posServo<0)
     posServo=0
   console.log("servo"+posicion);
-  motor.servoWrite(parseInt(posServo));
-  });
+  posicion=posServo*(1750/180)+550;
+  if(!(posicion<550 || posicion >2300))
+  {
+    console.log("servo"+posicion);
+    motor.servoWrite(parseInt(posicion));
+  }});
   socket.on('girar_izquierda',function(posicion) {
   var Gpio = require('pigpio').Gpio;
   var motor = new Gpio(21, {mode: Gpio.OUTPUT});
@@ -109,7 +113,12 @@ io.on('connection', function (socket) {
   if(posServo<0)
     posServo=0
   console.log("servo"+posicion);
-  motor.servoWrite(parseInt(posServo));
+  posicion=posServo*(1750/180)+550;
+  if(!(posicion<550 || posicion >2300))
+  {
+    console.log("servo"+posicion);
+    motor.servoWrite(parseInt(posicion));
+  }
   });
   socket.on('servo',function(posicion) {
 	var Gpio = require('pigpio').Gpio;
