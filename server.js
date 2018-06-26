@@ -95,9 +95,10 @@ io.on('connection', function (socket) {
   posicion=posicion*(180/1750)+550;
   if(!(posicion<550 || posicion >2300))
   {
-    motor.servoWrite(posicion);
+
+    console.log("servo"+posicion);
+    motor.servoWrite(parseInt(posicion));
   }
-  console.log("servo"+posicion);
 });
 
 });
