@@ -90,8 +90,8 @@ io.on('connection', function (socket) {
     console.log("iz atras "+time)
   });
   socket.on('servo',function(posicion) {
-	var Gpio = require('pigpio').Gpio,
-  motor = new Gpio(21, {mode: Gpio.OUTPUT}),
+	var Gpio = require('pigpio').Gpio;
+  var motor = new Gpio(21, {mode: Gpio.OUTPUT});
   if(!(posicion<510 || posicion >2490))
   {
     motor.servoWrite(posicion);
