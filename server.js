@@ -9,9 +9,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 var server = app.listen(port);
 var io = require('socket.io').listen(server);
-
-
-
 //Rutas
 app.use('/', express.static(__dirname + '/html/'));
 
@@ -28,14 +25,20 @@ app.get("/", function (req, res) {
 });
 
 
+var Gpio = require('onoff').Gpio;
+var adelante = new Gpio(26, 'out');
+var atras = new Gpio(19, 'out');
+var derecha = new Gpio(13, 'out');
+var izquierda = new Gpio(6, 'out');
 
-//comunicacion con socket
 io.on('connection', function (socket) {
-  socket.on('prueba',function(mensaje) {
-	var Gpio = require('onoff').Gpio; 
-	var LED = new Gpio(26, 'out');console.log(mensaje);
-	LED.writeSync(parseInt(mensaje));
-});
+  socket.on('adelante',function(time) {
+  	adelante.writeSync(1);
+    setTimeout(function () {
+      adelante.writeSync(0);
+    }, 1000)
+    console.log(time)
+  });
   socket.on('pruebaaa',function(mensaje) {
 	var Gpio = require('pigpio').Gpio,
   motor = new Gpio(21, {mode: Gpio.OUTPUT}),
